@@ -42,16 +42,14 @@ CREATE TABLE perfil_acesso (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE medico (
+CREATE TABLE usuario (
 	id int NOT NULL AUTO_INCREMENT,
+	email varchar(100) NOT NULL,
+	senha varchar(255) NOT NULL,
 	id_perfil_acesso int NOT NULL,
-	id_especialidade int NOT NULL,
-	crm varchar(50) NOT NULL,
 	nome varchar(255) NOT NULL,
 	PRIMARY KEY (id),
-	UNIQUE(crm),
-	FOREIGN KEY (id_perfil_acesso) REFERENCES perfil_acesso(id),
-	FOREIGN KEY (id_especialidade) REFERENCES especialidade(id)
+	FOREIGN KEY (id_perfil_acesso) REFERENCES perfil_acesso(id)
 );
 
 CREATE TABLE status (
@@ -73,15 +71,40 @@ CREATE TABLE solicitacao_encaminhamento (
 	id_status int NOT NULL,
 	id_medico_familia int NOT NULL,
 	id_medico_regulador int,
-	id_motivo_reprovacao int,
 	descricao text NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (id_paciente) REFERENCES paciente(id),
-	FOREIGN KEY (id_especialidade) REFERENCES especialidade(id),
-	FOREIGN KEY (id_status) REFERENCES status(id),
-	FOREIGN KEY (id_motivo_reprovacao) REFERENCES motivo_reprovacao(id),
-	FOREIGN KEY (id_medico_familia) REFERENCES medico(id),
-	FOREIGN KEY (id_medico_regulador) REFERENCES medico(id)
+	id_motivo_reprovacao int,
+	descricao_reprovacao text,
+	data_criacao timestamp NOT NULL DEFAULT current_timestamp,
+	data_atualizacao timestamp NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_paciente) REFERENCES paciente(id),
+    FOREIGN KEY (id_especialidade) REFERENCES especialidade(id),
+    FOREIGN KEY (id_status) REFERENCES status(id),
+    FOREIGN KEY (id_motivo_reprovacao) REFERENCES motivo_reprovacao(id),
+    FOREIGN KEY (id_medico_familia) REFERENCES usuario(id),
+    FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id)
+);
+
+CREATE TABLE solicitacao_encaminhamento_historico (
+    id int NOT NULL AUTO_INCREMENT,
+    id_solicitacao_encaminhamento int NOT NULL,
+    id_paciente int NOT NULL,
+    id_especialidade int NOT NULL,
+    id_status int NOT NULL,
+    id_medico_familia int NOT NULL,
+    id_medico_regulador int,
+    descricao text NOT NULL,
+    id_motivo_reprovacao int,
+    descricao_reprovacao text,
+    data_criacao timestamp NOT NULL DEFAULT current_timestamp,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_paciente) REFERENCES paciente(id),
+    FOREIGN KEY (id_especialidade) REFERENCES especialidade(id),
+    FOREIGN KEY (id_status) REFERENCES status(id),
+    FOREIGN KEY (id_motivo_reprovacao) REFERENCES motivo_reprovacao(id),
+    FOREIGN KEY (id_medico_familia) REFERENCES usuario(id),
+    FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id),
+    FOREIGN KEY (id_solicitacao_encaminhamento) REFERENCES solicitacao_encaminhamento(id)
 );
 
 INSERT INTO estado (id, sigla, nome) VALUES(1, 'mg', 'Minas Gerais');
@@ -110,10 +133,10 @@ INSERT INTO especialidade (id, nome) VALUES(5, 'Clínico Geral');
 INSERT INTO perfil_acesso (id, tipo) VALUES(1, 'Médico de Família');
 INSERT INTO perfil_acesso (id, tipo) VALUES(2, 'Médico Regulador');
 
-INSERT INTO medico (id, id_perfil_acesso, id_especialidade, crm, nome) VALUES(1, 1, 5, '12345', 'Dr. Amadeus');
-INSERT INTO medico (id, id_perfil_acesso, id_especialidade, crm, nome) VALUES(2, 2, 2, '67891', 'Dr. Ludwig');
-INSERT INTO medico (id, id_perfil_acesso, id_especialidade, crm, nome) VALUES(3, 1, 5, '13469', 'Dr. Sebastian');
-INSERT INTO medico (id, id_perfil_acesso, id_especialidade, crm, nome) VALUES(4, 2, 4, '25896', 'Dr. Frederic');
+INSERT INTO usuario (id, email, senha, id_perfil_acesso, nome) VALUES(1, 'amadeus@hsl.com', '123', 1, 'Dr. Amadeus');
+INSERT INTO usuario (id, email, senha, id_perfil_acesso, nome) VALUES(2, 'ludwig@hsl.com', '123', 2, 'Dr. Ludwig');
+INSERT INTO usuario (id, email, senha, id_perfil_acesso, nome) VALUES(3, 'sebastian@hsl.com', '123', 1, 'Dr. Sebastian');
+INSERT INTO usuario (id, email, senha, id_perfil_acesso, nome) VALUES(4, 'frederic@hsl.com', '123', 2, 'Dr. Frederic');
 
 INSERT INTO status (id, nome) VALUES(1, 'Pendente');
 INSERT INTO status (id, nome) VALUES(2, 'Aprovado');
