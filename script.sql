@@ -64,7 +64,7 @@ CREATE TABLE motivo_reprovacao (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE solicitacao_encaminhamento (
+CREATE TABLE encaminhamento (
 	id int NOT NULL AUTO_INCREMENT,
 	id_paciente int NOT NULL,
 	id_especialidade int NOT NULL,
@@ -85,9 +85,9 @@ CREATE TABLE solicitacao_encaminhamento (
     FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id)
 );
 
-CREATE TABLE solicitacao_encaminhamento_historico (
+CREATE TABLE encaminhamento_historico (
     id int NOT NULL AUTO_INCREMENT,
-    id_solicitacao_encaminhamento int NOT NULL,
+    id_encaminhamento int NOT NULL,
     id_paciente int NOT NULL,
     id_especialidade int NOT NULL,
     id_status int NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE solicitacao_encaminhamento_historico (
     FOREIGN KEY (id_motivo_reprovacao) REFERENCES motivo_reprovacao(id),
     FOREIGN KEY (id_medico_familia) REFERENCES usuario(id),
     FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id),
-    FOREIGN KEY (id_solicitacao_encaminhamento) REFERENCES solicitacao_encaminhamento(id)
+    FOREIGN KEY (id_encaminhamento) REFERENCES encaminhamento(id)
 );
 
 INSERT INTO estado (id, sigla, nome) VALUES(1, 'mg', 'Minas Gerais');
