@@ -13,20 +13,25 @@ use Illuminate\View\View;
 
 class EncaminhamentoController extends Controller
 {
+    private $encaminhamento;
+
+    public function __construct(Encaminhamento $encaminhamento)
+    {
+        $this->encaminhamento = $encaminhamento;
+    }
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('encaminhamento.lista');
+        return view('encaminhamento.lista', [
+            'encaminhamentos' => $this->encaminhamento->getAllWithRelations()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
      */
     public function create(Request $request)
     {
@@ -39,23 +44,14 @@ class EncaminhamentoController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $cpf_formatado =
-            substr($request->cpf, 0, 3) . '.' .
-            substr($request->cpf, 3, 3) . '.' .
-            substr($request->cpf, 6, 3) . '-' .
-            substr($request->cpf, 9, 2);
-
         $id_medico_familia = 1;
 
         $data = Encaminhamento::create([
             'nome_paciente' => $request->nome,
-            'cpf_paciente' => $cpf_formatado,
+            'cpf_paciente' => $request->cpf,
             'cidade_paciente' => $request->cidade,
             'estado_paciente' => $request->estado,
             'id_especialidade' => $request->especialidade,
@@ -67,7 +63,7 @@ class EncaminhamentoController extends Controller
         EncaminhamentoHistorico::create([
             'id_encaminhamento' => $data->id,
             'nome_paciente' => $request->nome,
-            'cpf_paciente' => $cpf_formatado,
+            'cpf_paciente' => $request->cpf,
             'cidade_paciente' => $request->cidade,
             'estado_paciente' => $request->estado,
             'id_especialidade' => $request->especialidade,
@@ -76,14 +72,11 @@ class EncaminhamentoController extends Controller
             'id_medico_familia' => $id_medico_familia,
         ]);
 
-        return redirect('encaminhamento/cadastro_sucesso');
+        return redirect('encaminhamento/sucesso');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Encaminhamento  $encaminhamento
-     * @return \Illuminate\Http\Response
      */
     public function show(Encaminhamento $encaminhamento)
     {
@@ -92,32 +85,42 @@ class EncaminhamentoController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Encaminhamento  $encaminhamento
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Encaminhamento $encaminhamento)
+    public function edit(int $id)
     {
-        //
+        $encaminhamento = $this->encaminhamento->findOrFail($id);
+
+        return view('encaminhamento.atualizacao', [
+            'especialidades' => Especialidade::all()->pluck('nome', 'id'),
+            'encaminhamento' => $encaminhamento
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Encaminhamento  $encaminhamento
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Encaminhamento $encaminhamento)
+    public function update(Request $request, int $id)
     {
-        //
+        $id_medico_familia = 1;
+
+        $encaminhamento = $this->encaminhamento->findOrFail($id);
+
+        $encaminhamento->nome_paciente = $request->nome;
+        $encaminhamento->cpf_paciente = $request->cpf;
+        $encaminhamento->cidade_paciente = $request->cidade;
+        $encaminhamento->estado_paciente = $request->estado;
+        $encaminhamento->id_especialidade = $request->especialidade;
+        $encaminhamento->id_status = $request->status;
+        $encaminhamento->descricao = $request->descricao;
+        $encaminhamento->id_medico_familia = $id_medico_familia;
+
+        $encaminhamento->save();
+
+        return redirect('encaminhamento/sucesso');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Encaminhamento  $encaminhamento
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Encaminhamento $encaminhamento)
     {

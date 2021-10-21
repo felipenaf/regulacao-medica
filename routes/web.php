@@ -20,9 +20,13 @@ Route::get('/', function () {
 Route::post('/encaminhamento', 'EncaminhamentoController@store')
     ->name('registrar_encaminhamento');
 
+Route::post('/encaminhamento/{id}', 'EncaminhamentoController@update')
+    ->name('atualizar_encaminhamento');
+
 Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
-Route::get('/encaminhamento/cadastro_sucesso', function () {
-    return view('encaminhamento.cadastro_sucesso');
+Route::get('/encaminhamento/sucesso', function () {
+    return view('encaminhamento.sucesso');
 });
 
 Route::get('/encaminhamento', 'EncaminhamentoController@index');
+Route::get('/encaminhamento/{id}', 'EncaminhamentoController@edit');

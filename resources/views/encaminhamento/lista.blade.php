@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -64,7 +64,7 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -80,20 +80,44 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Encaminhamento
-                </div>
+                <h2>Encaminhamentos</h2>
+                <table>
+                    <thead>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Cidade</th>
+                        <th>Estado</th>
+                        <th>Status</th>
+                        <th>Especialidade</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        @forelse($encaminhamentos as $encaminhamento)
+                            <tr>
+                                <td>{{$encaminhamento->nome_paciente}}</td>
+                                <td>{{$encaminhamento->cpf_paciente}}</td>
+                                <td>{{$encaminhamento->cidade_paciente}}</td>
+                                <td>{{$encaminhamento->estado_paciente}}</td>
+                                <td>{{$encaminhamento->status}}</td>
+                                <td>{{$encaminhamento->especialidade}}</td>
+                                <td>
+                                    <a href="{{url('/encaminhamento', $encaminhamento->id)}}">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{url('/encaminhamento', $encaminhamento->id)}}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <p>Nenhuma encaminhamento cadastrado</p>
+                        @endforelse
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </body>
