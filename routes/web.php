@@ -17,4 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/encaminhamento', 'EncaminhamentoController@store')
+    ->name('registrar_encaminhamento');
+
+Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
+Route::get('/encaminhamento/cadastro_sucesso', function () {
+    return view('encaminhamento.cadastro_sucesso');
+});
+
 Route::get('/encaminhamento', 'EncaminhamentoController@index');
