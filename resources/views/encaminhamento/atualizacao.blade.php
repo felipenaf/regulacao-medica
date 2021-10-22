@@ -61,6 +61,10 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .invalid-feedback {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -73,10 +77,18 @@
                 <div>
                     <form action="{{ route('atualizar_encaminhamento', $encaminhamento->id) }}" method="post">
                         @csrf
+
                         <label>
                             Nome do Paciente *<br>
                             <input value="{{$encaminhamento->nome_paciente}}" type="text" name="nome" minlength="3" maxlength="255">
                         </label>
+
+                        @error('nome')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             CPF do Paciente *<br>
@@ -90,16 +102,37 @@
                                 required
                             >
                         </label>
+
+                        @error('cpf')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Cidade do paciente *<br>
                             <input value="{{$encaminhamento->cidade_paciente}}" type="text" name="cidade" minlength="3" maxlength="255" required>
                         </label>
+
+                        @error('cidade')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Estado do Paciente *<br>
                             <input value="{{$encaminhamento->estado_paciente}}" type="text" name="estado" minlength="2" maxlength="2" required>
                         </label>
+
+                        @error('estado')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Especialidades:<br>
@@ -114,9 +147,24 @@
                                 @endforelse
                             </select>
                         </label>
+
+                        @error('especialidade')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label for="">
-                            Descrição do problema *<br>
+                            Descrição do problema *
+
+                            @error('descricao')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <br>
                             <textarea
                                 name="descricao"
                                 cols="50"

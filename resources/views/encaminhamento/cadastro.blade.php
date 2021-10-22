@@ -61,6 +61,10 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .invalid-feedback {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -73,13 +77,29 @@
                 <div>
                     <form action="{{ route('registrar_encaminhamento') }}" method="POST">
                         @csrf
+
                         <label>
                             Nome do Paciente *<br>
-                            <input type="text" name="nome" minlength="3" maxlength="255">
+                            <input
+                                type="text"
+                                name="nome"
+                                minlength="3"
+                                maxlength="255"
+                                value="{{ old('nome') }}"
+
+                            >
                         </label>
+
+                        @error('nome')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             CPF do Paciente *<br>
+
                             <input
                                 type="text"
                                 name="cpf"
@@ -87,19 +107,41 @@
                                 minlength="11"
                                 maxlength="11"
                                 title="Informe apenas os números"
-                                required
+                                value="{{ old('cpf') }}"
+
                             >
                         </label>
+
+                        @error('cpf')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Cidade do paciente *<br>
-                            <input type="text" name="cidade" minlength="3" maxlength="255" required>
+                            <input type="text" name="cidade" minlength="3" maxlength="255" value="{{ old('cidade') }}" >
                         </label>
+
+                        @error('cidade')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Estado do Paciente *<br>
-                            <input type="text" name="estado" minlength="2" maxlength="2" required>
+                            <input type="text" name="estado" minlength="2" maxlength="2" value="{{ old('estado') }}" >
                         </label>
+
+                        @error('estado')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label>
                             Especialidades:<br>
@@ -111,16 +153,33 @@
                                 @endforelse
                             </select>
                         </label>
+
+                        @error('especialidade')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
                         <br>
                         <label for="">
-                            Descrição do problema *<br>
+                            Descrição do problema *
+
+                            @error('descricao')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+
+                            <br>
                             <textarea
                                 name="descricao"
                                 cols="50"
                                 rows="10"
                                 minlength="10"
                                 maxlength="500"
-                                required></textarea>
+                                value="{{ old('nome') }}"
+
+                                ></textarea>
                         </label>
                         <br><br>
                         <input type="hidden" name="status" value="1">

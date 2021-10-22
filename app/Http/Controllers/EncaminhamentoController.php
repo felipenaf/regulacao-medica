@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 class EncaminhamentoController extends Controller
 {
     private $encaminhamento;
+    private $encaminhamentoHistorico;
 
-    public function __construct(Encaminhamento $encaminhamento)
-    {
+    public function __construct(
+        Encaminhamento $encaminhamento,
+        EncaminhamentoHistorico $encaminhamentoHistorico
+    ) {
         $this->encaminhamento = $encaminhamento;
+        $this->encaminhamentoHistorico = $encaminhamentoHistorico;
     }
 
     /**
@@ -63,9 +67,20 @@ class EncaminhamentoController extends Controller
      */
     public function store(Request $request)
     {
+        // TODO: colocar sessão
         $id_medico_familia = 1;
 
-        $data = Encaminhamento::create([
+        $this->validate($request, [
+            'nome' => 'required|max:255',
+            'cpf' => 'required|max:11|regex:/[0-9]+/',
+            'cidade' => 'required|max:255',
+            'estado' => 'required|max:2',
+            'especialidade' => 'required|integer',
+            'status' => 'required|integer',
+            'descricao' => 'required|max:500'
+        ]);
+
+        $data = $this->encaminhamento::create([
             'nome_paciente' => $request->nome,
             'cpf_paciente' => $request->cpf,
             'cidade_paciente' => $request->cidade,
@@ -76,7 +91,7 @@ class EncaminhamentoController extends Controller
             'id_medico_familia' => $id_medico_familia,
         ]);
 
-        EncaminhamentoHistorico::create([
+        $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $data->id,
             'nome_paciente' => $request->nome,
             'cpf_paciente' => $request->cpf,
@@ -118,6 +133,16 @@ class EncaminhamentoController extends Controller
     public function update(Request $request, int $id)
     {
         $id_medico_familia = 1;
+
+        $this->validate($request, [
+            'nome' => 'required|max:255',
+            'cpf' => 'required|max:11|regex:/[0-9]+/',
+            'cidade' => 'required|max:255',
+            'estado' => 'required|max:2',
+            'especialidade' => 'required|integer',
+            'status' => 'required|integer',
+            'descricao' => 'required|max:500'
+        ]);
 
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 

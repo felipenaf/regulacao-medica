@@ -107,6 +107,7 @@
                         <th>Estado</th>
                         <th>Status</th>
                         <th>Especialidade</th>
+                        <th>Data/Hora de modificação</th>
                         <th></th>
                     </thead>
                     @endif
@@ -119,6 +120,7 @@
                                 <td>{{$encaminhamento->estado_paciente}}</td>
                                 <td>{{$encaminhamento->status}}</td>
                                 <td>{{$encaminhamento->especialidade}}</td>
+                                <td>{{$encaminhamento->data_atualizacao}}</td>
                                 <td>
                                     <a href="{{url('/encaminhamento', $encaminhamento->id)}}">
                                         <i class="fa fa-pencil" title="Editar"></i>
