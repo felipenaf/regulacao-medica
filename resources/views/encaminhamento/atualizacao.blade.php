@@ -19,6 +19,12 @@
                     Cadastro de Encaminhamento
                 </h2>
 
+                <div class="">
+                    <a href="{{url('/encaminhamento')}}">
+                        Voltar
+                    </a>
+                </div>
+
                 <div>
                     <form action="{{ route('atualizar_encaminhamento', $encaminhamento->id) }}" method="post">
                         @csrf

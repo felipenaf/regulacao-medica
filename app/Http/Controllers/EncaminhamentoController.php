@@ -6,6 +6,7 @@ use App\Encaminhamento;
 use App\EncaminhamentoHistorico;
 use App\Especialidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EncaminhamentoController extends Controller
 {
@@ -40,6 +41,7 @@ class EncaminhamentoController extends Controller
 
         $encaminhamentos = $encaminhamentos->get([
             "encaminhamento.*",
+            DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
             "especialidade.nome as especialidade",
             "status.nome as status"
         ]);

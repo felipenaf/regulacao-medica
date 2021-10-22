@@ -56,6 +56,7 @@
                         <th>Estado</th>
                         <th>Status</th>
                         <th>Especialidade</th>
+                        <th>Descrição</th>
                         <th>Data/Hora de modificação</th>
                         <th></th>
                     </thead>
@@ -69,6 +70,7 @@
                                 <td>{{$encaminhamento->estado_paciente}}</td>
                                 <td>{{$encaminhamento->status}}</td>
                                 <td>{{$encaminhamento->especialidade}}</td>
+                                <td title="{{$encaminhamento->descricao}}">{{$encaminhamento->descr}}</td>
                                 <td>{{$encaminhamento->data_atualizacao}}</td>
                                 <td>
                                     <a href="{{url('/encaminhamento/edit', $encaminhamento->id)}}">
