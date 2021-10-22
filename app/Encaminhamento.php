@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Encaminhamento extends Model
@@ -23,12 +24,12 @@ class Encaminhamento extends Model
         'id_medico_familia',
     ];
 
-    public function getAllWithRelations()
+    public function getAllWithRelations(int $id_medico_familia)
     {
         return DB::table($this->table)
             ->join('especialidade', 'especialidade.id', '=', 'encaminhamento.id_especialidade')
             ->join('status', 'status.id', '=', 'encaminhamento.id_status')
-            ->get(["encaminhamento.*", "especialidade.nome as especialidade", "status.nome as status"]);
+            ->where('id_medico_familia', '=', $id_medico_familia);
     }
 
     /**

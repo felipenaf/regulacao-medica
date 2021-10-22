@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/encaminhamento', 'EncaminhamentoController@index')
+    ->name('filtrar_nome');
+
 Route::post('/encaminhamento', 'EncaminhamentoController@store')
     ->name('registrar_encaminhamento');
 
@@ -24,9 +27,9 @@ Route::post('/encaminhamento/{id}', 'EncaminhamentoController@update')
     ->name('atualizar_encaminhamento');
 
 Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
+
 Route::get('/encaminhamento/sucesso', function () {
     return view('encaminhamento.sucesso');
 });
 
-Route::get('/encaminhamento', 'EncaminhamentoController@index');
 Route::get('/encaminhamento/{id}', 'EncaminhamentoController@edit');

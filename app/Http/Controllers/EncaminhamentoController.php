@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Encaminhamento;
 use App\EncaminhamentoHistorico;
 use App\Especialidade;
-use App\Paciente;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class EncaminhamentoController extends Controller
 {
@@ -23,10 +19,30 @@ class EncaminhamentoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        //TODO: Pegar da sessão
+        $id_medico_familia = 1;
+        $filtro_nome = '';
+
+        $encaminhamentos = $this->encaminhamento
+            ->getAllWithRelations($id_medico_familia);
+
+        if (!\is_null($request->filtro_nome)) {
+            $filtro_nome = $request->filtro_nome;
+            $encaminhamentos = $encaminhamentos
+                ->where('nome_paciente', 'like', '%' . $request->filtro_nome . '%');
+        }
+
+        $encaminhamentos = $encaminhamentos->get([
+            "encaminhamento.*",
+            "especialidade.nome as especialidade",
+            "status.nome as status"
+        ]);
+
         return view('encaminhamento.lista', [
-            'encaminhamentos' => $this->encaminhamento->getAllWithRelations()
+            'encaminhamentos' => $encaminhamentos,
+            'filtro_nome' => $filtro_nome
         ]);
     }
 

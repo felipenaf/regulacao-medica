@@ -79,9 +79,27 @@
                 </div>
             @endif
 
-            <div class="content">
-                <h2>Encaminhamentos</h2>
-                <table>
+            <div>
+                <div class="">
+                    <h2>Encaminhamentos</h2>
+                </div>
+                <div class="">
+                    <a href="{{url('/encaminhamento/cadastro')}}">
+                        Cadastrar novo encaminhamento
+                    </a>
+                </div>
+                <br>
+                <div class="">
+                    <form action="{{route('filtrar_nome')}}" method="get">
+                        <label for="filtro_nome">
+                            Filtrar por nome
+                            <input type="text" name="filtro_nome" value="{{ $filtro_nome }}">
+                        </label>
+                        <button>Pesquisar</button>
+                    </form>
+                </div>
+                <table class="content">
+                    @if($encaminhamentos->isNotEmpty())
                     <thead>
                         <th>Nome</th>
                         <th>CPF</th>
@@ -91,6 +109,7 @@
                         <th>Especialidade</th>
                         <th></th>
                     </thead>
+                    @endif
                     <tbody>
                         @forelse($encaminhamentos as $encaminhamento)
                             <tr>
@@ -102,22 +121,20 @@
                                 <td>{{$encaminhamento->especialidade}}</td>
                                 <td>
                                     <a href="{{url('/encaminhamento', $encaminhamento->id)}}">
-                                        <i class="fa fa-pencil"></i>
+                                        <i class="fa fa-pencil" title="Editar"></i>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="{{url('/encaminhamento', $encaminhamento->id)}}">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-trash" title="Apagar"></i>
                                     </a>
                                 </td>
                             </tr>
                         @empty
-                            <p>Nenhuma encaminhamento cadastrado</p>
+                            <p>Nenhum resgistro encantrado</p>
                         @endforelse
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </body>
