@@ -17,19 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/encaminhamento', 'EncaminhamentoController@index')
-    ->name('filtrar_nome');
+Route::get('/encaminhamento', 'EncaminhamentoController@index')->name('filtrar_nome');
+Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
+Route::get('/encaminhamento/edit/{id}', 'EncaminhamentoController@edit');
+Route::get('/encaminhamento/delete/{id}', 'EncaminhamentoController@delete');
 
 Route::post('/encaminhamento', 'EncaminhamentoController@store')
     ->name('registrar_encaminhamento');
-
-Route::post('/encaminhamento/{id}', 'EncaminhamentoController@update')
+Route::post('/encaminhamento/edit/{id}', 'EncaminhamentoController@update')
     ->name('atualizar_encaminhamento');
-
-Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
+Route::post('/encaminhamento/delete/{id}', 'EncaminhamentoController@destroy')
+    ->name('apagar_encaminhamento');
 
 Route::get('/encaminhamento/sucesso', function () {
     return view('encaminhamento.sucesso');
 });
-
-Route::get('/encaminhamento/{id}', 'EncaminhamentoController@edit');

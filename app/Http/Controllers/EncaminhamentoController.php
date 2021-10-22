@@ -161,10 +161,26 @@ class EncaminhamentoController extends Controller
     }
 
     /**
+     * Show the form for delete the specified resource
+     */
+    public function delete(int $id)
+    {
+        $encaminhamento = $this->encaminhamento->findOrFail($id);
+
+        return view('encaminhamento.remocao', [
+            'encaminhamento' => $encaminhamento
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Encaminhamento $encaminhamento)
+    public function destroy(int $id)
     {
-        //
+        $encaminhamento = $this->encaminhamento->findOrFail($id);
+
+        $encaminhamento->delete();
+
+        return redirect('encaminhamento/sucesso');
     }
 }
