@@ -24,14 +24,21 @@ class Encaminhamento extends Model
         'id_medico_familia',
     ];
 
-    public function getAllWithRelations(int $id_medico_familia): Builder
+    public function getAll(): Builder
     {
         return DB::table($this->table)
             ->join('especialidade', 'especialidade.id', '=', 'encaminhamento.id_especialidade')
             ->join('status', 'status.id', '=', 'encaminhamento.id_status')
-            ->where('id_medico_familia', '=', $id_medico_familia)
             ->orderBy('data_atualizacao', 'desc');
     }
+
+    public function getAllByMedicoFamilia(int $id_medico_familia): Builder
+    {
+        return $this->getAll()
+            ->where('id_medico_familia', '=', $id_medico_familia);
+    }
+
+
 
     /**
      * Acessor

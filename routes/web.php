@@ -17,7 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/encaminhamento', 'EncaminhamentoController@index')->name('filtrar_nome');
+Route::get('/encaminhamento/familia', 'EncaminhamentoController@getAllFamilia')->name('filtro_nome');
+Route::get('/encaminhamento/regulador', 'EncaminhamentoController@getAllRegulador')->name('filtro_status');
 Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
 Route::get('/encaminhamento/edit/{id}', 'EncaminhamentoController@edit');
 Route::get('/encaminhamento/delete/{id}', 'EncaminhamentoController@delete');

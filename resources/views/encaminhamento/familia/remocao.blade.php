@@ -22,7 +22,7 @@
                 <div>
                     <form action="{{ route('apagar_encaminhamento', $encaminhamento->id) }}" method="post">
                         @csrf
-                        <a href="{{url('/encaminhamento')}}"> Voltar </a>
+                        <a href="{{url('/encaminhamento/familia')}}"> Voltar </a>
 
                         <div>
                             Tem certeza que deseja remover o encaminhamento do paciente: {{ $encaminhamento->nome_paciente }} ?

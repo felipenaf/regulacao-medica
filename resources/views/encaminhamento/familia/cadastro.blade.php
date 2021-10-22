@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="">
-                    <a href="{{url('/encaminhamento')}}">
+                    <a href="{{url('/encaminhamento/familia')}}">
                         Voltar
                     </a>
                 </div>
@@ -39,7 +39,6 @@
                                 minlength="3"
                                 maxlength="255"
                                 value="{{ old('nome') }}"
-
                             >
                         </label>
 

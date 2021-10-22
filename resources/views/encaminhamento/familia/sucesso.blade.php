@@ -35,7 +35,7 @@
 
                 <div class="links">
                     <a href="{{ url('encaminhamento/cadastro') }}">Tela de cadastro</a>
-                    <a href="{{ url('encaminhamento') }}">Lista de encaminhamentos</a>
+                    <a href="{{ url('encaminhamento/familia') }}">Lista de encaminhamentos</a>
                 </div>
             </div>
         </div>

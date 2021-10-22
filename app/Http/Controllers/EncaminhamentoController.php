@@ -26,12 +26,17 @@ class EncaminhamentoController extends Controller
      */
     public function index(Request $request)
     {
+
+    }
+
+    public function getAllFamilia(Request $request)
+    {
         //TODO: Pegar da sessão
         $id_medico_familia = 1;
         $filtro_nome = '';
 
         $encaminhamentos = $this->encaminhamento
-            ->getAllWithRelations($id_medico_familia);
+            ->getAllByMedicoFamilia($id_medico_familia);
 
         if (!\is_null($request->filtro_nome)) {
             $filtro_nome = $request->filtro_nome;
@@ -46,9 +51,35 @@ class EncaminhamentoController extends Controller
             "status.nome as status"
         ]);
 
-        return view('encaminhamento.lista', [
+        return view('encaminhamento.familia.lista', [
             'encaminhamentos' => $encaminhamentos,
             'filtro_nome' => $filtro_nome
+        ]);
+    }
+
+    public function getAllRegulador(Request $request)
+    {
+        $filtro_status = '';
+
+        $encaminhamentos = $this->encaminhamento->getAll();
+
+        if (!\is_null($request->filtro_status)) {
+            $filtro_status = $request->filtro_status;
+            $encaminhamentos = $encaminhamentos
+                ->where('id_status', '=', $request->filtro_status);
+        }
+
+        $encaminhamentos = $encaminhamentos->get([
+            "encaminhamento.*",
+            DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
+            "especialidade.nome as especialidade",
+            "status.nome as status"
+        ]);
+
+        //TODO: Pegar da sessão o perfil do médico
+        return view('encaminhamento.regulador.lista', [
+            'encaminhamentos' => $encaminhamentos,
+            'filtro_status' => $filtro_status
         ]);
     }
 
@@ -59,7 +90,7 @@ class EncaminhamentoController extends Controller
     {
         // $dados_sessao = $request->session()->all();
 
-        return view('encaminhamento.cadastro', [
+        return view('encaminhamento.familia.cadastro', [
             'especialidades' => Especialidade::all()->pluck('nome', 'id')
         ]);
     }
@@ -123,7 +154,7 @@ class EncaminhamentoController extends Controller
     {
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
-        return view('encaminhamento.atualizacao', [
+        return view('encaminhamento.familia.atualizacao', [
             'especialidades' => Especialidade::all()->pluck('nome', 'id'),
             'encaminhamento' => $encaminhamento
         ]);
@@ -169,7 +200,7 @@ class EncaminhamentoController extends Controller
     {
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
-        return view('encaminhamento.remocao', [
+        return view('encaminhamento.familia.remocao', [
             'encaminhamento' => $encaminhamento
         ]);
     }

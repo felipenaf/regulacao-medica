@@ -16,11 +16,11 @@
         <div class="m-l-md position-ref">
             <div class="">
                 <h2 class="m-b-md">
-                    Cadastro de Encaminhamento
+                    Atualização de Status
                 </h2>
 
                 <div class="">
-                    <a href="{{url('/encaminhamento')}}">
+                    <a href="{{url('/encaminhamento/regulador')}}">
                         Voltar
                     </a>
                 </div>

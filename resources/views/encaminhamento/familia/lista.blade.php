@@ -39,7 +39,7 @@
                 </div>
                 <br>
                 <div class="">
-                    <form action="{{route('filtrar_nome')}}" method="get">
+                    <form action="{{route('filtro_nome')}}" method="get">
                         <label for="filtro_nome">
                             Filtrar por nome
                             <input type="text" name="filtro_nome" value="{{ $filtro_nome }}">
