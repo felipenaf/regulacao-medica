@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>{{ env('APP_NAME') }}</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+    @include('encaminhamento.head')
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\URL::asset('css/style.css') }}">
-    </head>
     <body>
         <div class="position-ref full-height">
             @if (Route::has('login'))
@@ -42,6 +33,7 @@
                         <button>Pesquisar</button>
                     </form>
                 </div>
+                <br>
                 <table class="content">
                     @if($encaminhamentos->isNotEmpty())
                     <thead>
@@ -53,7 +45,7 @@
                         <th>Especialidade</th>
                         <th>Descrição</th>
                         <th>Data/Hora de modificação</th>
-                        <th></th>
+                        <th>Detalhes</th>
                     </thead>
                     @endif
                     <tbody>
@@ -68,18 +60,13 @@
                                 <td title="{{$encaminhamento->descricao}}">{{$encaminhamento->descr}}</td>
                                 <td>{{$encaminhamento->data_atualizacao}}</td>
                                 <td>
-                                    <a href="{{url('/encaminhamento/edit', $encaminhamento->id)}}">
-                                        <i class="fa fa-pencil" title="Editar"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{url('/encaminhamento/delete', $encaminhamento->id)}}">
-                                        <i class="fa fa-trash" title="Apagar"></i>
+                                    <a href="{{url('/encaminhamento/regulador/edit', $encaminhamento->id)}}">
+                                        <i class="fa fa-pencil" title="Detalhes">edit</i>
                                     </a>
                                 </td>
                             </tr>
                         @empty
-                            <p>Nenhum resgistro encantrado</p>
+                            <p>Nenhum resgistro encontrado</p>
                         @endforelse
                     </tbody>
                 </table>

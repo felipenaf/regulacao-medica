@@ -21,5 +21,6 @@ class EncaminhamentoHistorico extends Model
         'id_status',
         'descricao',
         'id_medico_familia',
+        'id_medico_regulador',
     ];
 }

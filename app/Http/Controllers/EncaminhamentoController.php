@@ -26,11 +26,6 @@ class EncaminhamentoController extends Controller
      */
     public function index(Request $request)
     {
-
-    }
-
-    public function getAllFamilia(Request $request)
-    {
         //TODO: Pegar da sessão
         $id_medico_familia = 1;
         $filtro_nome = '';
@@ -54,32 +49,6 @@ class EncaminhamentoController extends Controller
         return view('encaminhamento.familia.lista', [
             'encaminhamentos' => $encaminhamentos,
             'filtro_nome' => $filtro_nome
-        ]);
-    }
-
-    public function getAllRegulador(Request $request)
-    {
-        $filtro_status = '';
-
-        $encaminhamentos = $this->encaminhamento->getAll();
-
-        if (!\is_null($request->filtro_status)) {
-            $filtro_status = $request->filtro_status;
-            $encaminhamentos = $encaminhamentos
-                ->where('id_status', '=', $request->filtro_status);
-        }
-
-        $encaminhamentos = $encaminhamentos->get([
-            "encaminhamento.*",
-            DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
-            "especialidade.nome as especialidade",
-            "status.nome as status"
-        ]);
-
-        //TODO: Pegar da sessão o perfil do médico
-        return view('encaminhamento.regulador.lista', [
-            'encaminhamentos' => $encaminhamentos,
-            'filtro_status' => $filtro_status
         ]);
     }
 
@@ -179,6 +148,10 @@ class EncaminhamentoController extends Controller
 
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
+        if ($encaminhamento->aprovado()) {
+            return response('', \Illuminate\Http\Response::HTTP_FORBIDDEN);
+        }
+
         $encaminhamento->nome_paciente = $request->nome;
         $encaminhamento->cpf_paciente = $request->cpf;
         $encaminhamento->cidade_paciente = $request->cidade;
@@ -189,6 +162,18 @@ class EncaminhamentoController extends Controller
         $encaminhamento->id_medico_familia = $id_medico_familia;
 
         $encaminhamento->save();
+
+        $this->encaminhamentoHistorico::create([
+            'id_encaminhamento' => $encaminhamento->id,
+            'nome_paciente' => $request->nome,
+            'cpf_paciente' => $request->cpf,
+            'cidade_paciente' => $request->cidade,
+            'estado_paciente' => $request->estado,
+            'id_especialidade' => $request->especialidade,
+            'id_status' => $request->status,
+            'descricao' => $request->descricao,
+            'id_medico_familia' => $id_medico_familia,
+        ]);
 
         return redirect('encaminhamento/sucesso');
     }

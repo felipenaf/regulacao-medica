@@ -1,135 +1,150 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ env('APP_NAME') }}</title>
+    @include('encaminhamento.head')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\URL::asset('css/style.css') }}">
-    </head>
     <body>
-        <div class="m-l-md position-ref">
-            <div class="">
+        <div class="container">
+            <div class="row">
                 <h2 class="m-b-md">
                     Atualização de Status
                 </h2>
 
-                <div class="">
-                    <a href="{{url('/encaminhamento/regulador')}}">
-                        Voltar
-                    </a>
-                </div>
+                <a href="{{url('/encaminhamento/regulador')}}">
+                    Voltar
+                </a>
+            </div>
 
-                <div>
-                    <form action="{{ route('atualizar_encaminhamento', $encaminhamento->id) }}" method="post">
-                        @csrf
+            <div class="row mb-3"></div>
 
+            <div class="row">
+                <div class="col">
+                    @if($encaminhamento->pendente())
+                        <form action="{{ route('atualizar_status_encaminhamento', $encaminhamento->id) }}" method="post">
+                            @csrf
+
+                            <label>
+                                Status:
+                                <select name="status" id="id_status">
+                                    @forelse ($status as $key => $value)
+                                        <option value="{{$key}}"
+                                            @if ($encaminhamento->id_status == $key) selected @endif>
+                                            {{$value}}
+                                        </option>
+                                    @empty
+                                        <option value="0">Cadastre um status</option>
+                                    @endforelse
+                                </select>
+                            </label>
+
+                            <br><br>
+
+                            <label id="motivo_reprovacao" {{--style="display:none"--}}>
+                                Motivo de Reprovação:
+                                <select name="motivo_reprovacao">
+                                    @forelse ($motivo_reprovacao as $key => $value)
+                                        <option value="{{$key}}"
+                                                @if ($encaminhamento->id_status == $key) selected @endif>
+                                            {{$value}}
+                                        </option>
+                                    @empty
+                                        <option value="0">Cadastre um motivo de reprovação</option>
+                                    @endforelse
+                                </select>
+                            </label>
+                            <br><br>
+                            <button>Salvar</button>
+                        </form>
+                    @else
                         <label>
-                            Nome do Paciente *<br>
-                            <input value="{{$encaminhamento->nome_paciente}}" type="text" name="nome" minlength="3" maxlength="255">
-                        </label>
-
-                        @error('nome')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-
-                        <br>
-                        <label>
-                            CPF do Paciente *<br>
-                            <input value="{{$encaminhamento->cpf_paciente}}"
-                                type="text"
-                                name="cpf"
-                                pattern="[0-9]+"
-                                minlength="11"
-                                maxlength="11"
-                                title="Informe apenas os números"
-                                required
-                            >
-                        </label>
-
-                        @error('cpf')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-
-                        <br>
-                        <label>
-                            Cidade do paciente *<br>
-                            <input value="{{$encaminhamento->cidade_paciente}}" type="text" name="cidade" minlength="3" maxlength="255" required>
-                        </label>
-
-                        @error('cidade')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-
-                        <br>
-                        <label>
-                            Estado do Paciente *<br>
-                            <input value="{{$encaminhamento->estado_paciente}}" type="text" name="estado" minlength="2" maxlength="2" required>
-                        </label>
-
-                        @error('estado')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-
-                        <br>
-                        <label>
-                            Especialidades:<br>
-                            <select name="especialidade">
-                                @forelse ($especialidades as $key => $especialidade)
+                            Status:
+                            <select disabled name="status" id="id_status">
+                                @forelse ($status as $key => $value)
                                     <option value="{{$key}}"
-                                        @if ($encaminhamento->id_especialidade == $key) selected @endif>
-                                        {{$especialidade}}
+                                        @if ($encaminhamento->id_status == $key) selected @endif>
+                                        {{$value}}
                                     </option>
                                 @empty
-                                    <option value="0">Cadastre um especialidade</option>
+                                    <option value="0">Cadastre um status</option>
                                 @endforelse
                             </select>
                         </label>
 
-                        @error('especialidade')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <br><br>
 
-                        <br>
-                        <label for="">
-                            Descrição do problema *
-
-                            @error('descricao')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-
-                            <br>
-                            <textarea
-                                name="descricao"
-                                cols="50"
-                                rows="10"
-                                minlength="10"
-                                maxlength="500"
-                                required>{{$encaminhamento->descricao}}</textarea>
+                        <label id="motivo_reprovacao" {{--style="display:none"--}}>
+                            Motivo de Reprovação:
+                            <select disabled name="motivo_reprovacao">
+                                @forelse ($motivo_reprovacao as $key => $value)
+                                    <option value="{{$key}}"
+                                            @if ($encaminhamento->id_status == $key) selected @endif>
+                                        {{$value}}
+                                    </option>
+                                @empty
+                                    <option value="0">Cadastre um motivo de reprovação</option>
+                                @endforelse
+                            </select>
                         </label>
                         <br><br>
-                        <input value="{{$encaminhamento->id_status}}" type="hidden" name="status">
-                        <button>Salvar</button>
-                    </form>
+                    @endif
+                </div>
+
+                <br>
+
+                <div class="col">
+                    <label>
+                        Nome do Paciente <br>
+                        <input disabled value="{{$encaminhamento->nome_paciente}}" type="text">
+                    </label>
+
+                    <br>
+                    <label>
+                        CPF do Paciente <br>
+                        <input disabled value="{{$encaminhamento->cpf_paciente}}" type="text">
+                    </label>
+
+                    <br>
+                    <label>
+                        Cidade do paciente <br>
+                        <input disabled value="{{$encaminhamento->cidade_paciente}}" type="text">
+                    </label>
+
+                    <br>
+                    <label>
+                        Estado do Paciente <br>
+                        <input disabled value="{{$encaminhamento->estado_paciente}}" type="text">
+                    </label>
+
+                    <br>
+                    <label>
+                        Especialidade:<br>
+                        <select disabled name="especialidade">
+                            @forelse ($especialidades as $key => $especialidade)
+                                <option value="{{$key}}"
+                                    @if ($encaminhamento->id_especialidade == $key) selected @endif>
+                                    {{$especialidade}}
+                                </option>
+                            @empty
+                                <option value="0">Cadastre um especialidade</option>
+                            @endforelse
+                        </select>
+                    </label>
+
+                    <br>
+                    <label for="">
+                        Descrição do problema
+                        <br>
+                        <textarea
+                            disabled
+                            cols="50"
+                            rows="10"
+                            >{{$encaminhamento->descricao}}</textarea>
+                    </label>
                 </div>
             </div>
         </div>
+
+        <script src="{{ \Illuminate\Support\Facades\URL::asset('js/script.js') }}"></script>
+        {{--        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>--}}
     </body>
 </html>

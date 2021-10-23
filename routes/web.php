@@ -17,19 +17,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/encaminhamento/familia', 'EncaminhamentoController@getAllFamilia')->name('filtro_nome');
-Route::get('/encaminhamento/regulador', 'EncaminhamentoController@getAllRegulador')->name('filtro_status');
+Route::get('/encaminhamento/familia', 'EncaminhamentoController@index')->name('filtro_nome');
+Route::get('/encaminhamento/regulador', 'EncaminhamentoReguladorController@index')->name('filtro_status');
+
 Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');
-Route::get('/encaminhamento/edit/{id}', 'EncaminhamentoController@edit');
+
+Route::get('/encaminhamento/familia/edit/{id}', 'EncaminhamentoController@edit');
+Route::get('/encaminhamento/regulador/edit/{id}', 'EncaminhamentoReguladorController@edit');
+
 Route::get('/encaminhamento/delete/{id}', 'EncaminhamentoController@delete');
 
 Route::post('/encaminhamento', 'EncaminhamentoController@store')
     ->name('registrar_encaminhamento');
+
 Route::post('/encaminhamento/edit/{id}', 'EncaminhamentoController@update')
     ->name('atualizar_encaminhamento');
+Route::post('/encaminhamento/regulador/edit/{id}', 'EncaminhamentoReguladorController@update')
+    ->name('atualizar_status_encaminhamento');
+
 Route::post('/encaminhamento/delete/{id}', 'EncaminhamentoController@destroy')
     ->name('apagar_encaminhamento');
 
 Route::get('/encaminhamento/sucesso', function () {
-    return view('encaminhamento.sucesso');
+    return view('encaminhamento.familia.sucesso');
+});
+
+Route::get('/encaminhamento/regulador/sucesso', function () {
+    return view('encaminhamento.regulador.sucesso');
 });

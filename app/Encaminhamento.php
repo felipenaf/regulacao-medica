@@ -38,7 +38,15 @@ class Encaminhamento extends Model
             ->where('id_medico_familia', '=', $id_medico_familia);
     }
 
+    public function pendente(): bool
+    {
+        return $this->attributes['id_status'] == Status::PENDENTE;
+    }
 
+    public function aprovado(): bool
+    {
+        return $this->attributes['id_status'] == Status::APROVADO;
+    }
 
     /**
      * Acessor
