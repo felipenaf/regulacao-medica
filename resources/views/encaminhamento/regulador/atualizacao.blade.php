@@ -39,7 +39,7 @@
 
                             <br><br>
 
-                            <label id="motivo_reprovacao" {{--style="display:none"--}}>
+                            <label id="motivo_reprovacao" style="display:none">
                                 Motivo de Reprovação:
                                 <select name="motivo_reprovacao">
                                     @forelse ($motivo_reprovacao as $key => $value)

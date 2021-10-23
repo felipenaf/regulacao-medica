@@ -1,4 +1,11 @@
-let status = document.getElementById('id_status')
+const status = document.getElementById('id_status');
 
-ee = document.getElementById('motivo_reprovacao')
-// ee.setAttribute('style', 'display:block')
+status.addEventListener('change', function () {
+    let motivo_reprovacao = document.getElementById('motivo_reprovacao');
+
+    if (status.value === '3') {
+        motivo_reprovacao.style.display = 'block'
+    } else {
+        motivo_reprovacao.style.display = 'none'
+    }
+})
