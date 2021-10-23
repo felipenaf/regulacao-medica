@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    @include('encaminhamento.head')
+    @include('head')
 
     <body>
         <div class="container">

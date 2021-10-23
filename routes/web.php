@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', 'AutenticacaoController@index')->name('login');
+Route::post('/login', 'AutenticacaoController@login')->name('autenticacao');
+
 Route::get('/encaminhamento/familia', 'EncaminhamentoController@index')->name('filtro_nome');
+    // ->middleware('AuthSession');
 Route::get('/encaminhamento/regulador', 'EncaminhamentoReguladorController@index')->name('filtro_status');
 
 Route::get('/encaminhamento/cadastro', 'EncaminhamentoController@create');

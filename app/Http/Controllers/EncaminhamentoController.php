@@ -29,6 +29,7 @@ class EncaminhamentoController extends Controller
     public function index(Request $request)
     {
         //TODO: Pegar da sessão
+        // $id_medico_familia = $request->session()->get('userData')['id'];
         $id_medico_familia = 1;
         $filtro_nome = '';
 
