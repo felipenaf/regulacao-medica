@@ -59,7 +59,11 @@
                                 <td>{{$encaminhamento->cpf_paciente}}</td>
                                 <td>{{$encaminhamento->cidade_paciente}}</td>
                                 <td>{{$encaminhamento->estado_paciente}}</td>
-                                <td>{{$encaminhamento->status}}</td>
+                                <td
+                                    @if($encaminhamento->id_status == \App\Status::REPROVADO)
+                                        title="{{ $encaminhamento->motivo_reprovacao }}"
+                                    @endif
+                                >{{$encaminhamento->status}}</td>
                                 <td>{{$encaminhamento->especialidade}}</td>
                                 <td title="{{$encaminhamento->descricao}}">{{$encaminhamento->descr}}</td>
                                 <td>{{$encaminhamento->data_atualizacao}}</td>

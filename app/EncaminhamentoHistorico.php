@@ -22,5 +22,6 @@ class EncaminhamentoHistorico extends Model
         'descricao',
         'id_medico_familia',
         'id_medico_regulador',
+        'id_motivo_reprovacao',
     ];
 }

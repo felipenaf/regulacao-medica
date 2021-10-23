@@ -11,4 +11,10 @@ class Status extends Model
     public const PENDENTE = 1;
     public const APROVADO = 2;
     public const REPROVADO = 3;
+
+    public static $text = [
+        self::PENDENTE => 'Pendente',
+        self::APROVADO => 'Aprovado',
+        self::REPROVADO => 'Reprovado'
+    ];
 }

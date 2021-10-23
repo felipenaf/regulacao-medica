@@ -16,6 +16,23 @@
                     </a>
                 </div>
 
+                @if($encaminhamento->reprovado())
+                    <div>
+                        <p>
+                            <b>Status: </b>
+                            <span class="red">
+                                {{ \App\Status::$text[\App\Status::REPROVADO] }}
+                            </span>
+                        </p>
+                        <p>
+                            <b>Motivo da reprovação: </b>
+                            <span class="red">
+                                {{ $motivo_reprovacao[$encaminhamento->id_motivo_reprovacao] }}
+                            </span>
+                        </p>
+                    </div>
+                @endif
+
                 <div>
                     <form action="{{ route('atualizar_encaminhamento', $encaminhamento->id) }}" method="post">
                         @csrf

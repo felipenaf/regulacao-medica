@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Encaminhamento;
 use App\EncaminhamentoHistorico;
 use App\Especialidade;
+use App\MotivoReprovacao;
+use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -43,7 +45,8 @@ class EncaminhamentoController extends Controller
             "encaminhamento.*",
             DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
             "especialidade.nome as especialidade",
-            "status.nome as status"
+            "status.nome as status",
+            "motivo_reprovacao.descricao as motivo_reprovacao"
         ]);
 
         return view('encaminhamento.familia.lista', [
@@ -125,7 +128,8 @@ class EncaminhamentoController extends Controller
 
         return view('encaminhamento.familia.atualizacao', [
             'especialidades' => Especialidade::all()->pluck('nome', 'id'),
-            'encaminhamento' => $encaminhamento
+            'encaminhamento' => $encaminhamento,
+            'motivo_reprovacao' => MotivoReprovacao::all()->pluck('descricao', 'id')
         ]);
     }
 
@@ -157,22 +161,24 @@ class EncaminhamentoController extends Controller
         $encaminhamento->cidade_paciente = $request->cidade;
         $encaminhamento->estado_paciente = $request->estado;
         $encaminhamento->id_especialidade = $request->especialidade;
-        $encaminhamento->id_status = $request->status;
+        $encaminhamento->id_status = Status::PENDENTE;
         $encaminhamento->descricao = $request->descricao;
         $encaminhamento->id_medico_familia = $id_medico_familia;
+        $encaminhamento->id_medico_regulador = null;
+        $encaminhamento->id_motivo_reprovacao = null;
 
         $encaminhamento->save();
 
         $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $encaminhamento->id,
-            'nome_paciente' => $request->nome,
-            'cpf_paciente' => $request->cpf,
-            'cidade_paciente' => $request->cidade,
-            'estado_paciente' => $request->estado,
-            'id_especialidade' => $request->especialidade,
-            'id_status' => $request->status,
-            'descricao' => $request->descricao,
-            'id_medico_familia' => $id_medico_familia,
+            'nome_paciente' => $encaminhamento->nome_paciente,
+            'cpf_paciente' => $encaminhamento->cpf_paciente,
+            'cidade_paciente' => $encaminhamento->cidade_paciente,
+            'estado_paciente' => $encaminhamento->estado_paciente,
+            'id_especialidade' => $encaminhamento->id_especialidade,
+            'id_status' => $encaminhamento->id_status,
+            'descricao' => $encaminhamento->descricao,
+            'id_medico_familia' => $encaminhamento->id_medico_familia,
         ]);
 
         return redirect('encaminhamento/sucesso');

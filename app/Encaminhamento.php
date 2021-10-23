@@ -29,6 +29,7 @@ class Encaminhamento extends Model
         return DB::table($this->table)
             ->join('especialidade', 'especialidade.id', '=', 'encaminhamento.id_especialidade')
             ->join('status', 'status.id', '=', 'encaminhamento.id_status')
+            ->join('motivo_reprovacao', 'motivo_reprovacao.id', '=', 'encaminhamento.id_status')
             ->orderBy('data_atualizacao', 'desc');
     }
 
@@ -46,6 +47,11 @@ class Encaminhamento extends Model
     public function aprovado(): bool
     {
         return $this->attributes['id_status'] == Status::APROVADO;
+    }
+
+    public function reprovado(): bool
+    {
+        return $this->attributes['id_status'] == Status::REPROVADO;
     }
 
     /**
