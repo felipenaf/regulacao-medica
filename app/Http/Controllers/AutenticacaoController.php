@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AutenticacaoController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('autenticacao.login');
     }
@@ -43,5 +43,13 @@ class AutenticacaoController extends Controller
         }
 
         return redirect('/encaminhamento/regulador');
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->session()->flush();
+
+        return redirect()
+            ->route('login');
     }
 }
