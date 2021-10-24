@@ -25,7 +25,7 @@ class AutenticacaoController extends Controller
             ->where('senha', '=', $request->senha)
             ->first();
 
-        if ($user->doesntExist()) {
+        if (is_null($user)) {
             $request->session()->flash('falha_login', 'Login ou senha inválidos');
             $request->session()->flash('email', $request->email);
 
