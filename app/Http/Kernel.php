@@ -3,6 +3,8 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthSession;
+use App\Http\Middleware\AuthSessionFamilia;
+use App\Http\Middleware\AuthSessionRegulador;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,5 +67,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.session' => AuthSession::class,
+        'auth.session.familia' => AuthSessionFamilia::class,
+        'auth.session.regulador' => AuthSessionRegulador::class,
     ];
 }
