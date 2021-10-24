@@ -10,6 +10,7 @@ use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class EncaminhamentoReguladorController extends Controller
 {
@@ -77,17 +78,14 @@ class EncaminhamentoReguladorController extends Controller
             'motivo_reprovacao' => 'integer'
         ]);
 
-        // TODO: pegar da sessão
-        $id_medico_regulador = 2;
-
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
         if (!$encaminhamento->pendente()) {
-            return response('', \Illuminate\Http\Response::HTTP_FORBIDDEN);
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         $encaminhamento->id_status = $request->status;
-        $encaminhamento->id_medico_regulador = $id_medico_regulador;
+        $encaminhamento->id_medico_regulador = $request->session()->get('userData')['id'];
 
         if ($request->status == Status::REPROVADO) {
             $encaminhamento->id_motivo_reprovacao = $request->motivo_reprovacao;

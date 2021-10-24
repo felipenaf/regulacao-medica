@@ -9,6 +9,7 @@ use App\MotivoReprovacao;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class EncaminhamentoController extends Controller
 {
@@ -28,18 +29,13 @@ class EncaminhamentoController extends Controller
      */
     public function index(Request $request)
     {
-        //TODO: Pegar da sessão
-        // $id_medico_familia = $request->session()->get('userData')['id'];
-        $id_medico_familia = 1;
-        $filtro_nome = '';
-
         $encaminhamentos = $this->encaminhamento
-            ->getAllByMedicoFamilia($id_medico_familia);
+            ->getAllByMedicoFamilia($request->session()->get('userData')['id']);
 
-        if (!\is_null($request->filtro_nome)) {
-            $filtro_nome = $request->filtro_nome;
+        $filtro_nome = $request->get('filtro_nome');
+        if (!\is_null($filtro_nome)) {
             $encaminhamentos = $encaminhamentos
-                ->where('nome_paciente', 'like', '%' . $request->filtro_nome . '%');
+                ->where('nome_paciente', 'like', '%' . $filtro_nome . '%');
         }
 
         $encaminhamentos = $encaminhamentos->get([
@@ -50,6 +46,8 @@ class EncaminhamentoController extends Controller
             "motivo_reprovacao.descricao as motivo_reprovacao"
         ]);
 
+        $request->flashOnly('filtro_nome');
+
         return view('encaminhamento.familia.lista', [
             'encaminhamentos' => $encaminhamentos,
             'filtro_nome' => $filtro_nome
@@ -59,10 +57,8 @@ class EncaminhamentoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        // $dados_sessao = $request->session()->all();
-
         return view('encaminhamento.familia.cadastro', [
             'especialidades' => Especialidade::all()->pluck('nome', 'id')
         ]);
@@ -73,9 +69,6 @@ class EncaminhamentoController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: colocar sessão
-        $id_medico_familia = 1;
-
         $this->validate($request, [
             'nome' => 'required|max:255',
             'cpf' => 'required|max:11|regex:/[0-9]+/',
@@ -94,30 +87,22 @@ class EncaminhamentoController extends Controller
             'id_especialidade' => $request->especialidade,
             'id_status' => $request->status,
             'descricao' => $request->descricao,
-            'id_medico_familia' => $id_medico_familia,
+            'id_medico_familia' => $request->session()->get('userData')['id'],
         ]);
 
         $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $data->id,
-            'nome_paciente' => $request->nome,
-            'cpf_paciente' => $request->cpf,
-            'cidade_paciente' => $request->cidade,
-            'estado_paciente' => $request->estado,
-            'id_especialidade' => $request->especialidade,
-            'id_status' => $request->status,
-            'descricao' => $request->descricao,
-            'id_medico_familia' => $id_medico_familia,
+            'nome_paciente' => $data->nome_paciente,
+            'cpf_paciente' => $data->cpf_paciente,
+            'cidade_paciente' => $data->cidade_paciente,
+            'estado_paciente' => $data->estado_paciente,
+            'id_especialidade' => $data->id_especialidade,
+            'id_status' => $data->id_status,
+            'descricao' => $data->descricao,
+            'id_medico_familia' => $data->id_medico_familia,
         ]);
 
         return redirect('encaminhamento/sucesso');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Encaminhamento $encaminhamento)
-    {
-        //
     }
 
     /**
@@ -139,8 +124,6 @@ class EncaminhamentoController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $id_medico_familia = 1;
-
         $this->validate($request, [
             'nome' => 'required|max:255',
             'cpf' => 'required|max:11|regex:/[0-9]+/',
@@ -154,7 +137,7 @@ class EncaminhamentoController extends Controller
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
         if ($encaminhamento->aprovado()) {
-            return response('', \Illuminate\Http\Response::HTTP_FORBIDDEN);
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         $encaminhamento->nome_paciente = $request->nome;
@@ -164,7 +147,7 @@ class EncaminhamentoController extends Controller
         $encaminhamento->id_especialidade = $request->especialidade;
         $encaminhamento->id_status = Status::PENDENTE;
         $encaminhamento->descricao = $request->descricao;
-        $encaminhamento->id_medico_familia = $id_medico_familia;
+        $encaminhamento->id_medico_familia = $request->session()->get('userData')['id'];
         $encaminhamento->id_medico_regulador = null;
         $encaminhamento->id_motivo_reprovacao = null;
 
@@ -190,10 +173,8 @@ class EncaminhamentoController extends Controller
      */
     public function delete(int $id)
     {
-        $encaminhamento = $this->encaminhamento->findOrFail($id);
-
         return view('encaminhamento.familia.remocao', [
-            'encaminhamento' => $encaminhamento
+            'encaminhamento' => $this->encaminhamento->findOrFail($id)
         ]);
     }
 
