@@ -28,14 +28,12 @@ class EncaminhamentoReguladorController extends Controller
      */
     public function index(Request $request)
     {
-        $filtro_status = '';
-
         $encaminhamentos = $this->encaminhamento->getAll();
 
-        if (!\is_null($request->filtro_status)) {
-            $filtro_status = $request->filtro_status;
+        $filtro_status = $request->get('filtro_status');
+        if (!\is_null($filtro_status)) {
             $encaminhamentos = $encaminhamentos
-                ->where('id_status', '=', $request->filtro_status);
+                ->where('id_status', '=', $filtro_status);
         }
 
         $encaminhamentos = $encaminhamentos->get([
@@ -45,9 +43,11 @@ class EncaminhamentoReguladorController extends Controller
             "status.nome as status"
         ]);
 
+        $request->flashOnly('filtro_status');
+
         return view('encaminhamento.regulador.lista', [
             'encaminhamentos' => $encaminhamentos,
-            'filtro_status' => $filtro_status
+            'status' => Status::all()->pluck('nome', 'id')->prepend('Todos', '')
         ]);
     }
 
