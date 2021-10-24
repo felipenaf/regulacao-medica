@@ -4,8 +4,10 @@
     @include('head')
 
     <body>
-        <div class="m-l-md position-ref">
-            <div class="">
+        <div class="container">
+            @include('menu')
+
+            <div class="row">
                 <h2 class="m-b-md">
                     Atualização de Encaminhamento
                 </h2>

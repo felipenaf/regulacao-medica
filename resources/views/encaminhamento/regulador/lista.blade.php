@@ -29,7 +29,7 @@
                 </form>
             </div>
             <br>
-            <table class="content">
+            <table class="table">
                 @if($encaminhamentos->isNotEmpty())
                 <thead>
                     <th>Nome</th>

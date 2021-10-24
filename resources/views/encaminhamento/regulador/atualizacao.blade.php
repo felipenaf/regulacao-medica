@@ -9,6 +9,7 @@
             <div class="row">
                 <h2 class="m-b-md">
                     Atualização de Status
+                    @if(!$encaminhamento->pendente()) <span class="input-error">(Esse registro já foi {{ \App\Status::$text[$encaminhamento->id_status] }})</span> @endif
                 </h2>
 
                 <a href="{{url('/encaminhamento/regulador')}}">
@@ -65,7 +66,7 @@
                     @else
                         <label>
                             Status:
-                            <select disabled name="status" id="id_status">
+                            <select disabled>
                                 @forelse ($status as $key => $value)
                                     <option value="{{$key}}"
                                         @if ($encaminhamento->id_status == $key) selected @endif>
@@ -79,9 +80,9 @@
 
                         <br><br>
 
-                        <label id="motivo_reprovacao" {{--style="display:none"--}}>
+                        <label>
                             Motivo de Reprovação:
-                            <select disabled name="motivo_reprovacao">
+                            <select disabled>
                                 @forelse ($motivo_reprovacao as $key => $value)
                                     <option value="{{$key}}"
                                             @if ($encaminhamento->id_status == $key) selected @endif>

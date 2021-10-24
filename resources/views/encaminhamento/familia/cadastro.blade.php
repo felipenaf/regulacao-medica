@@ -4,13 +4,13 @@
     @include('head')
 
     <body>
-        <div class="m-l-md position-ref ">
-            <div class="">
-                <div>
-                    <h2>
-                        Cadastro de Encaminhamento
-                    </h2>
-                </div>
+        <div class="container">
+            @include('menu')
+
+            <div class="row">
+                <h2>
+                    Cadastro de Encaminhamento
+                </h2>
 
                 <div class="">
                     <a href="{{url('/encaminhamento/familia')}}">

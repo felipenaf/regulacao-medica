@@ -4,32 +4,21 @@
     @include('head')
 
     <body>
-        <div class="position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+        <div class="container">
+            @include('menu')
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+            <div class="row">
+                <h2>
+                    Encaminhamentos
+                </h2>
 
-            <div class="m-l-md position-ref">
-                <div>
-                    <h2>Encaminhamentos</h2>
-                </div>
-                <div class="">
+                <div class="mb-4">
                     <a href="{{url('/encaminhamento/cadastro')}}">
                         Cadastrar novo encaminhamento
                     </a>
                 </div>
-                <br>
-                <div class="">
+
+                <div class="mb-4">
                     <form action="{{route('filtro_nome')}}" method="get">
                         <label for="filtro_nome">
                             Filtrar por nome
@@ -38,7 +27,8 @@
                         <button>Pesquisar</button>
                     </form>
                 </div>
-                <table class="content">
+
+                <table class="table">
                     @if($encaminhamentos->isNotEmpty())
                     <thead>
                         <th>Nome</th>
@@ -49,7 +39,7 @@
                         <th>Especialidade</th>
                         <th>Descrição</th>
                         <th>Data/Hora de modificação</th>
-                        <th></th>
+                        <th>Detalhes</th>
                     </thead>
                     @endif
                     <tbody>

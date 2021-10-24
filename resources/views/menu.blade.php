@@ -6,7 +6,11 @@
             </h5>
         </div>
         <div class="col links">
-            <a href="{{ url('/encaminhamento/regulador') }}">Home</a>
+            @if(\Illuminate\Support\Facades\Session::get('userData')['perfil'] == \App\PerfilAcesso::MEDICO_FAMILIA)
+                <a href="{{ url('/encaminhamento/familia') }}">Home</a>
+            @else
+                <a href="{{ url('/encaminhamento/regulador') }}">Home</a>
+            @endif
         </div>
         <div class="col links">
             <a href="{{ route('logoff') }}">Sair</a>

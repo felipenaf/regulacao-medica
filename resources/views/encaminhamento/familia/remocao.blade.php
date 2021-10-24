@@ -4,24 +4,24 @@
     @include('head')
 
     <body>
-        <div class="m-l-md position-ref">
-            <div class="">
-                <h2 class="m-b-md">
-                    Apagar registro
-                </h2>
+        <div class="container">
+            @include('menu')
 
-                <div>
-                    <form action="{{ route('apagar_encaminhamento', $encaminhamento->id) }}" method="post">
-                        @csrf
-                        <a href="{{url('/encaminhamento/familia')}}"> Voltar </a>
+            <h2 class="m-b-md">
+                Apagar registro
+            </h2>
 
-                        <div>
-                            Tem certeza que deseja remover o encaminhamento do paciente: {{ $encaminhamento->nome_paciente }} ?
-                        </div>
+            <div>
+                <form action="{{ route('apagar_encaminhamento', $encaminhamento->id) }}" method="post">
+                    @csrf
+                    <a href="{{url('/encaminhamento/familia')}}"> Voltar </a>
 
-                        <button>Sim</button>
-                    </form>
-                </div>
+                    <div>
+                        Tem certeza que deseja remover o encaminhamento do paciente: {{ $encaminhamento->nome_paciente }} ?
+                    </div>
+
+                    <button>Sim</button>
+                </form>
             </div>
         </div>
     </body>
