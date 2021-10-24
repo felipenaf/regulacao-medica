@@ -9,6 +9,7 @@ use App\MotivoReprovacao;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class EncaminhamentoReguladorController extends Controller
 {
@@ -72,7 +73,7 @@ class EncaminhamentoReguladorController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'status' => 'required|integer',
+            'status' => [Rule::in(Status::excetoPendente())],
             'motivo_reprovacao' => 'integer'
         ]);
 

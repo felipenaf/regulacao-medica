@@ -70,13 +70,13 @@
                                 <td>
                                     @if($encaminhamento->id_status != \App\Status::APROVADO)
                                         <a href="{{url('/encaminhamento/familia/edit', $encaminhamento->id)}}">
-                                            <i class="fa fa-pencil" title="Editar">e</i>
+                                            <i class="fa fa-pencil" title="Editar"></i>
                                         </a>
                                     @endif
                                 </td>
                                 <td>
                                     <a href="{{url('/encaminhamento/delete', $encaminhamento->id)}}">
-                                        <i class="fa fa-trash" title="Apagar">e</i>
+                                        <i class="fa fa-trash" title="Apagar"></i>
                                     </a>
                                 </td>
                             </tr>

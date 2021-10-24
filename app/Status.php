@@ -17,4 +17,12 @@ class Status extends Model
         self::APROVADO => 'Aprovado',
         self::REPROVADO => 'Reprovado'
     ];
+
+    public static function excetoPendente(): array
+    {
+        return [
+            Status::APROVADO,
+            Status::REPROVADO,
+        ];
+    }
 }

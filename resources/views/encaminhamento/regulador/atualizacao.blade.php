@@ -5,6 +5,7 @@
 
     <body>
         <div class="container">
+            @include('menu')
             <div class="row">
                 <h2 class="m-b-md">
                     Atualização de Status
@@ -36,6 +37,12 @@
                                     @endforelse
                                 </select>
                             </label>
+
+                            @error('status')
+                                <span class="input-error" role="alert">
+                                    <strong>Só é possível os status Aprovado e Reprovado</strong>
+                                </span>
+                            @enderror
 
                             <br><br>
 

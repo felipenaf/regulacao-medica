@@ -34,7 +34,7 @@
                         </label>
 
                         @error('nome')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -56,7 +56,7 @@
                         </label>
 
                         @error('cpf')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -68,7 +68,7 @@
                         </label>
 
                         @error('cidade')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -80,7 +80,7 @@
                         </label>
 
                         @error('estado')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -98,7 +98,7 @@
                         </label>
 
                         @error('especialidade')
-                            <span class="invalid-feedback" role="alert">
+                            <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -108,7 +108,7 @@
                             Descrição do problema *
 
                             @error('descricao')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="input-error" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
