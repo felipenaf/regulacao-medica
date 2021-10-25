@@ -14,10 +14,12 @@
                         <input
                             type="text"
                             name="email"
-                            value="{{ session('email', '')}}"
+                            value="{{ old('email', session('email', ''))}}"
                             required
                         >
                     </label>
+
+                    <br>
 
                     @error('email')
                     <span class="input-error" role="alert">
