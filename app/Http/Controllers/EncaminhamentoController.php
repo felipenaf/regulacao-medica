@@ -6,9 +6,11 @@ use App\Encaminhamento;
 use App\EncaminhamentoHistorico;
 use App\Especialidade;
 use App\MotivoReprovacao;
+use App\Paciente;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class EncaminhamentoController extends Controller
@@ -35,11 +37,15 @@ class EncaminhamentoController extends Controller
         $filtro_nome = $request->get('filtro_nome');
         if (!\is_null($filtro_nome)) {
             $encaminhamentos = $encaminhamentos
-                ->where('nome_paciente', 'like', '%' . $filtro_nome . '%');
+                ->where('paciente.nome', 'like', '%' . $filtro_nome . '%');
         }
 
         $encaminhamentos = $encaminhamentos->get([
             "encaminhamento.*",
+            "paciente.nome as nome_paciente",
+            "paciente.cpf as cpf_paciente",
+            "cidade.nome as cidade_paciente",
+            "estado.nome as estado_paciente",
             DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
             "especialidade.nome as especialidade",
             "status.nome as status",
@@ -60,7 +66,8 @@ class EncaminhamentoController extends Controller
     public function create()
     {
         return view('encaminhamento.familia.cadastro', [
-            'especialidades' => Especialidade::all()->pluck('nome', 'id')
+            'especialidades' => Especialidade::all()->pluck('nome', 'id'),
+            'pacientes' => Paciente::all()->pluck('nome', 'id')->prepend('Escolha um paciente', '')
         ]);
     }
 
@@ -70,20 +77,14 @@ class EncaminhamentoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nome' => 'required|max:255',
-            'cpf' => 'required|max:11|regex:/[0-9]+/',
-            'cidade' => 'required|max:255',
-            'estado' => 'required|max:2',
+            'paciente' => Rule::in(Paciente::all()->pluck('id')->toArray()),
             'especialidade' => 'required|integer',
             'status' => 'required|integer',
             'descricao' => 'required|max:500'
         ]);
 
         $data = $this->encaminhamento::create([
-            'nome_paciente' => $request->nome,
-            'cpf_paciente' => $request->cpf,
-            'cidade_paciente' => $request->cidade,
-            'estado_paciente' => $request->estado,
+            'id_paciente' => $request->paciente,
             'id_especialidade' => $request->especialidade,
             'id_status' => $request->status,
             'descricao' => $request->descricao,
@@ -92,10 +93,7 @@ class EncaminhamentoController extends Controller
 
         $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $data->id,
-            'nome_paciente' => $data->nome_paciente,
-            'cpf_paciente' => $data->cpf_paciente,
-            'cidade_paciente' => $data->cidade_paciente,
-            'estado_paciente' => $data->estado_paciente,
+            'id_paciente' => $data->id_paciente,
             'id_especialidade' => $data->id_especialidade,
             'id_status' => $data->id_status,
             'descricao' => $data->descricao,

@@ -13,10 +13,7 @@ class EncaminhamentoHistorico extends Model
 
     protected $fillable = [
         'id_encaminhamento',
-        'nome_paciente',
-        'cpf_paciente',
-        'cidade_paciente',
-        'estado_paciente',
+        'id_paciente',
         'id_especialidade',
         'id_status',
         'descricao',

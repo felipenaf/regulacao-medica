@@ -14,10 +14,7 @@ class Encaminhamento extends Model
     const UPDATED_AT = 'data_atualizacao';
 
     protected $fillable = [
-        'nome_paciente',
-        'cpf_paciente',
-        'cidade_paciente',
-        'estado_paciente',
+        'id_paciente',
         'id_especialidade',
         'id_status',
         'descricao',
@@ -27,6 +24,9 @@ class Encaminhamento extends Model
     public function getAll(): Builder
     {
         return DB::table($this->table)
+            ->join('paciente', 'paciente.id', '=', 'encaminhamento.id_paciente')
+            ->join('cidade', 'cidade.id', '=', 'paciente.id_cidade')
+            ->join('estado', 'estado.id', '=', 'cidade.id_estado')
             ->join('especialidade', 'especialidade.id', '=', 'encaminhamento.id_especialidade')
             ->join('status', 'status.id', '=', 'encaminhamento.id_status')
             ->join('motivo_reprovacao', 'motivo_reprovacao.id', '=', 'encaminhamento.id_status')

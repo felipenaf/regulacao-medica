@@ -23,17 +23,17 @@
                         @csrf
 
                         <label>
-                            Nome do Paciente *<br>
-                            <input
-                                type="text"
-                                name="nome"
-                                minlength="3"
-                                maxlength="255"
-                                value="{{ old('nome') }}"
-                            >
+                            Paciente:<br>
+                            <select id="paciente" name="paciente" required>
+                                @forelse ($pacientes as $key => $paciente)
+                                    <option value="{{$key}}">{{$paciente}}</option>
+                                @empty
+                                    <option value="0">Cadastre um paciente</option>
+                                @endforelse
+                            </select>
                         </label>
 
-                        @error('nome')
+                        @error('paciente')
                             <span class="input-error" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -41,18 +41,9 @@
 
                         <br>
                         <label>
-                            CPF do Paciente *<br>
+                            CPF do Paciente<br>
 
-                            <input
-                                type="text"
-                                name="cpf"
-                                pattern="[0-9]+"
-                                minlength="11"
-                                maxlength="11"
-                                title="Informe apenas os números"
-                                value="{{ old('cpf') }}"
-
-                            >
+                            <input type="text" name="cpf" readonly>
                         </label>
 
                         @error('cpf')
@@ -63,8 +54,8 @@
 
                         <br>
                         <label>
-                            Cidade do paciente *<br>
-                            <input type="text" name="cidade" minlength="3" maxlength="255" value="{{ old('cidade') }}" >
+                            Cidade do paciente<br>
+                            <input type="text" name="cidade" readonly>
                         </label>
 
                         @error('cidade')
@@ -75,8 +66,8 @@
 
                         <br>
                         <label>
-                            Estado do Paciente *<br>
-                            <input type="text" name="estado" minlength="2" maxlength="2" value="{{ old('estado') }}" >
+                            Estado do Paciente<br>
+                            <input type="text" name="estado" readonly>
                         </label>
 
                         @error('estado')
@@ -120,9 +111,8 @@
                                 rows="10"
                                 minlength="10"
                                 maxlength="500"
-                                value="{{ old('nome') }}"
-
-                                ></textarea>
+                                required
+                            ></textarea>
                         </label>
                         <br><br>
                         <input type="hidden" name="status" value="1">
@@ -131,5 +121,6 @@
                 </div>
             </div>
         </div>
+        <script src="{{ \Illuminate\Support\Facades\URL::asset('js/cadastro.js') }}"></script>
     </body>
 </html>
