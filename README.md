@@ -33,7 +33,7 @@ O script do banco está trazendo alguns dados de entidades que não possuem tela
 
 Criei os usuários com senhas simples e sem criptografia para facilitar o teste.
 
-|email|senha|tipo|
+|email|senha|perfil|
 |-----|-----|----|
 |amadeus@hsl.com|123|Médico de Família|
 |sebastian@hsl.com|123|Médico de Família|
