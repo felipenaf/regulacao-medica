@@ -39,10 +39,15 @@ class EncaminhamentoReguladorController extends Controller
         }
 
         $encaminhamentos = $encaminhamentos->get([
-            "encaminhamento.*",
-            DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
-            "especialidade.nome as especialidade",
-            "status.nome as status"
+             "encaminhamento.*",
+             "paciente.nome as nome_paciente",
+             "paciente.cpf as cpf_paciente",
+             "cidade.nome as cidade_paciente",
+             "estado.nome as estado_paciente",
+             DB::raw("CONCAT(SUBSTR(encaminhamento.descricao, 1, 20), ' ...') as descr"),
+             "especialidade.nome as especialidade",
+             "status.nome as status",
+             "motivo_reprovacao.descricao as motivo_reprovacao"
         ]);
 
         $request->flashOnly('filtro_status');
@@ -58,7 +63,7 @@ class EncaminhamentoReguladorController extends Controller
      */
     public function edit(int $id)
     {
-        $encaminhamento = $this->encaminhamento->findOrFail($id);
+        $encaminhamento = $this->encaminhamento->getById($id);
 
         return view('encaminhamento.regulador.atualizacao', [
             'motivo_reprovacao' => MotivoReprovacao::all()->pluck('descricao', 'id'),
@@ -80,10 +85,6 @@ class EncaminhamentoReguladorController extends Controller
 
         $encaminhamento = $this->encaminhamento->findOrFail($id);
 
-        if (!$encaminhamento->pendente()) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
-
         $encaminhamento->id_status = $request->status;
         $encaminhamento->id_medico_regulador = $request->session()->get('userData')['id'];
 
@@ -95,10 +96,7 @@ class EncaminhamentoReguladorController extends Controller
 
         $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $encaminhamento->id,
-            'nome_paciente' => $encaminhamento->nome_paciente,
-            'cpf_paciente' => $encaminhamento->cpf_paciente,
-            'cidade_paciente' => $encaminhamento->cidade_paciente,
-            'estado_paciente' => $encaminhamento->estado_paciente,
+            'id_paciente' => $encaminhamento->id_paciente,
             'id_especialidade' => $encaminhamento->id_especialidade,
             'id_status' => $encaminhamento->id_status,
             'descricao' => $encaminhamento->descricao,

@@ -103,8 +103,7 @@ FOREIGN KEY (id_especialidade) REFERENCES especialidade(id),
 FOREIGN KEY (id_status) REFERENCES status(id),
 FOREIGN KEY (id_motivo_reprovacao) REFERENCES motivo_reprovacao(id),
 FOREIGN KEY (id_medico_familia) REFERENCES usuario(id),
-FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id),
-FOREIGN KEY (id_encaminhamento) REFERENCES encaminhamento(id)
+FOREIGN KEY (id_medico_regulador) REFERENCES usuario(id)
 );
 
 INSERT INTO estado (id, sigla, nome) VALUES(1, 'mg', 'Minas Gerais');

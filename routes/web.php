@@ -18,6 +18,19 @@ use Illuminate\Support\Facades\Session;
 /**
  * Colocar essa função em um middleware e passar nos controllers devidos
  */
+Route::get('/paciente/{id}', function (int $id) {
+    $paciente = \App\Paciente::query()
+        ->where('paciente.id', '=', $id)
+        ->join('cidade', 'cidade.id', '=', 'paciente.id_cidade')
+        ->join('estado', 'estado.id', '=', 'cidade.id_estado')
+        ->get(['paciente.*', 'cidade.nome as cidade', 'estado.nome as estado'])
+        ->first();
+
+    return response([
+        'paciente' => $paciente
+    ]);
+})->name('paciente');
+
 Route::get('/', function () {
     if (!Session::exists('userData')) {
         return redirect('/login');

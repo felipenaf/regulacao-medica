@@ -13,22 +13,20 @@
 
             <br>
             <div class="row">
-                @if($encaminhamentos->isNotEmpty())
-                    <form action="{{route('filtro_status')}}" method="get">
-                        <label for="filtro_status">
-                            Filtrar por status
-                            <select name="filtro_status">
-                                @foreach($status as $key => $value)
-                                    <option value="{{$key}}"
-                                        @if (old('filtro_status') == $key) selected @endif>
-                                        {{$value}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </label>
-                        <button>Pesquisar</button>
-                    </form>
-                @endif
+                <form action="{{route('filtro_status')}}" method="get">
+                    <label for="filtro_status">
+                        Filtrar por status
+                        <select name="filtro_status">
+                            @foreach($status as $key => $value)
+                                <option value="{{$key}}"
+                                    @if (old('filtro_status') == $key) selected @endif>
+                                    {{$value}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                    <button>Pesquisar</button>
+                </form>
             </div>
             <br>
             <table class="table">
