@@ -1,9 +1,9 @@
 ## Regulação médica
+A aplicação foi feita com Laravel 7 e Mysql.
 
 ### Pré-requisito
 - PHP >= 7.2
 - Composer
-- Laravel 7
 - MYSQL
 
 ### Instalação
