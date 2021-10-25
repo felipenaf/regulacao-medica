@@ -40,8 +40,8 @@
                         @csrf
 
                         <label>
-                            Nome do Paciente *<br>
-                            <input value="{{$encaminhamento->nome_paciente}}" type="text" name="nome" minlength="3" maxlength="255">
+                            Nome do Paciente<br>
+                            <input value="{{$encaminhamento->nome}}" type="text" readonly>
                         </label>
 
                         @error('nome')
@@ -52,16 +52,8 @@
 
                         <br>
                         <label>
-                            CPF do Paciente *<br>
-                            <input value="{{$encaminhamento->cpf_paciente}}"
-                                type="text"
-                                name="cpf"
-                                pattern="[0-9]+"
-                                minlength="11"
-                                maxlength="11"
-                                title="Informe apenas os números"
-                                required
-                            >
+                            CPF do Paciente<br>
+                            <input value="{{$encaminhamento->cpf}}" type="text" readonly>
                         </label>
 
                         @error('cpf')
@@ -72,8 +64,8 @@
 
                         <br>
                         <label>
-                            Cidade do paciente *<br>
-                            <input value="{{$encaminhamento->cidade_paciente}}" type="text" name="cidade" minlength="3" maxlength="255" required>
+                            Cidade do paciente<br>
+                            <input value="{{$encaminhamento->cidade}}" type="text" readonly>
                         </label>
 
                         @error('cidade')
@@ -84,8 +76,8 @@
 
                         <br>
                         <label>
-                            Estado do Paciente *<br>
-                            <input value="{{$encaminhamento->estado_paciente}}" type="text" name="estado" minlength="2" maxlength="2" required>
+                            Estado do Paciente<br>
+                            <input value="{{$encaminhamento->estado}}" type="text" readonly>
                         </label>
 
                         @error('estado')

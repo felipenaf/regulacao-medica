@@ -39,6 +39,20 @@ class Encaminhamento extends Model
             ->where('id_medico_familia', '=', $id_medico_familia);
     }
 
+    public function getById(int $id): Encaminhamento
+    {
+        return $this
+            ->where($this->table . '.id', '=', $id)
+            ->join('paciente', 'paciente.id', '=', 'encaminhamento.id_paciente')
+            ->join('cidade', 'cidade.id', '=', 'paciente.id_cidade')
+            ->join('estado', 'estado.id', '=', 'cidade.id_estado')
+            ->join('especialidade', 'especialidade.id', '=', 'encaminhamento.id_especialidade')
+            ->join('status', 'status.id', '=', 'encaminhamento.id_status')
+            ->join('motivo_reprovacao', 'motivo_reprovacao.id', '=', 'encaminhamento.id_status')
+            ->orderBy('data_atualizacao', 'desc')
+            ->first([$this->table . '.*', 'paciente.*', 'cidade.nome as cidade', 'estado.nome as estado']);
+    }
+
     public function pendente(): bool
     {
         return $this->attributes['id_status'] == Status::PENDENTE;

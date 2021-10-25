@@ -108,7 +108,7 @@ class EncaminhamentoController extends Controller
      */
     public function edit(int $id)
     {
-        $encaminhamento = $this->encaminhamento->findOrFail($id);
+        $encaminhamento = $this->encaminhamento->getById($id);
 
         return view('encaminhamento.familia.atualizacao', [
             'especialidades' => Especialidade::all()->pluck('nome', 'id'),
@@ -123,12 +123,7 @@ class EncaminhamentoController extends Controller
     public function update(Request $request, int $id)
     {
         $this->validate($request, [
-            'nome' => 'required|max:255',
-            'cpf' => 'required|max:11|regex:/[0-9]+/',
-            'cidade' => 'required|max:255',
-            'estado' => 'required|max:2',
-            'especialidade' => 'required|integer',
-            'status' => 'required|integer',
+            'especialidade' => Rule::in(Especialidade::all()->pluck('id')),
             'descricao' => 'required|max:500'
         ]);
 
@@ -138,10 +133,6 @@ class EncaminhamentoController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $encaminhamento->nome_paciente = $request->nome;
-        $encaminhamento->cpf_paciente = $request->cpf;
-        $encaminhamento->cidade_paciente = $request->cidade;
-        $encaminhamento->estado_paciente = $request->estado;
         $encaminhamento->id_especialidade = $request->especialidade;
         $encaminhamento->id_status = Status::PENDENTE;
         $encaminhamento->descricao = $request->descricao;
@@ -153,10 +144,7 @@ class EncaminhamentoController extends Controller
 
         $this->encaminhamentoHistorico::create([
             'id_encaminhamento' => $encaminhamento->id,
-            'nome_paciente' => $encaminhamento->nome_paciente,
-            'cpf_paciente' => $encaminhamento->cpf_paciente,
-            'cidade_paciente' => $encaminhamento->cidade_paciente,
-            'estado_paciente' => $encaminhamento->estado_paciente,
+            'id_paciente' => $encaminhamento->id_paciente,
             'id_especialidade' => $encaminhamento->id_especialidade,
             'id_status' => $encaminhamento->id_status,
             'descricao' => $encaminhamento->descricao,
@@ -172,7 +160,7 @@ class EncaminhamentoController extends Controller
     public function delete(int $id)
     {
         return view('encaminhamento.familia.remocao', [
-            'encaminhamento' => $this->encaminhamento->findOrFail($id)
+            'encaminhamento' => $this->encaminhamento->getById($id)
         ]);
     }
 
