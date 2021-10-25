@@ -50,7 +50,7 @@ class Encaminhamento extends Model
             ->join('status', 'status.id', '=', 'encaminhamento.id_status')
             ->join('motivo_reprovacao', 'motivo_reprovacao.id', '=', 'encaminhamento.id_status')
             ->orderBy('data_atualizacao', 'desc')
-            ->first([$this->table . '.*', 'paciente.*', 'cidade.nome as cidade', 'estado.nome as estado']);
+            ->first([$this->table . '.*', 'paciente.nome', 'paciente.cpf', 'cidade.nome as cidade', 'estado.nome as estado']);
     }
 
     public function pendente(): bool

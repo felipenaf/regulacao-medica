@@ -102,25 +102,25 @@
                 <div class="col">
                     <label>
                         Nome do Paciente <br>
-                        <input disabled value="{{$encaminhamento->nome_paciente}}" type="text">
+                        <input disabled value="{{$encaminhamento->nome}}" type="text">
                     </label>
 
                     <br>
                     <label>
                         CPF do Paciente <br>
-                        <input disabled value="{{$encaminhamento->cpf_paciente}}" type="text">
+                        <input disabled value="{{$encaminhamento->cpf}}" type="text">
                     </label>
 
                     <br>
                     <label>
                         Cidade do paciente <br>
-                        <input disabled value="{{$encaminhamento->cidade_paciente}}" type="text">
+                        <input disabled value="{{$encaminhamento->cidade}}" type="text">
                     </label>
 
                     <br>
                     <label>
                         Estado do Paciente <br>
-                        <input disabled value="{{$encaminhamento->estado_paciente}}" type="text">
+                        <input disabled value="{{$encaminhamento->estado}}" type="text">
                     </label>
 
                     <br>
