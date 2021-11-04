@@ -21,8 +21,8 @@ class Status extends Model
     public static function excetoPendente(): array
     {
         return [
-            Status::APROVADO,
-            Status::REPROVADO,
+            self::APROVADO,
+            self::REPROVADO,
         ];
     }
 }
