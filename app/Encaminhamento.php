@@ -67,24 +67,4 @@ class Encaminhamento extends Model
     {
         return $this->attributes['id_status'] == Status::REPROVADO;
     }
-
-    /**
-     * Acessor
-     */
-    public function getCpfPacienteAttribute($value)
-    {
-        return \str_replace(['.', '-'], '', $value);
-    }
-
-    /**
-     * Mutator
-     */
-    public function setCpfPacienteAttribute($value)
-    {
-        $this->attributes['cpf_paciente'] =
-            substr($value, 0, 3) . '.' .
-            substr($value, 3, 3) . '.' .
-            substr($value, 6, 3) . '-' .
-            substr($value, 9, 2);
-    }
 }
